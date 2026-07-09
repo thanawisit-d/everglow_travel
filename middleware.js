@@ -21,22 +21,23 @@ export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith('/admin') || pathname === '/admin') {
-    if (pathname !== '/admin/login') {
-      const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-        {
-          cookies: {
-            getAll: () => request.cookies.getAll(),
-            setAll: () => {},
-          },
-        }
-      );
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        return NextResponse.redirect(new URL('/admin/login', request.url));
-      }
-    }
+    // TODO: เปิด comment ด้านล่างเมื่อพร้อมล็อกอิน
+    // if (pathname !== '/admin/login') {
+    //   const supabase = createServerClient(
+    //     process.env.NEXT_PUBLIC_SUPABASE_URL,
+    //     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    //     {
+    //       cookies: {
+    //         getAll: () => request.cookies.getAll(),
+    //         setAll: () => {},
+    //       },
+    //     }
+    //   );
+    //   const { data: { user } } = await supabase.auth.getUser();
+    //   if (!user) {
+    //     return NextResponse.redirect(new URL('/admin/login', request.url));
+    //   }
+    // }
     return updateSession(request);
   }
 
