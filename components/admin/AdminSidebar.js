@@ -12,7 +12,7 @@ const navItems = [
   { href: '/admin/articles', label: 'Articles', icon: FileText },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ open, onClose }) {
   const pathname = usePathname();
 
   const isActive = (href) => {
@@ -30,7 +30,18 @@ export default function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col bg-gray-900 text-white lg:flex">
+    <>
+      {open && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-gray-900 text-white transition-transform ${
+          open ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0`}
+      >
       <div className="flex h-16 items-center justify-center border-b border-gray-800">
         <Link href="/admin" className="text-xl font-bold text-emerald-400">
           Everglow Admin
@@ -65,5 +76,6 @@ export default function AdminSidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }
