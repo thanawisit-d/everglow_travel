@@ -27,8 +27,8 @@ export default function ToursPage() {
   async function handleDelete(id) {
     if (!confirm('Are you sure you want to delete this tour?')) return;
     const supabase = createClient();
-    await supabase.from('tours').delete().eq('id', id);
-    setTours((prev) => prev.filter((t) => t.id !== id));
+    const { error } = await supabase.from('tours').delete().eq('id', id);
+    if (!error) setTours((prev) => prev.filter((t) => t.id !== id));
   }
 
   const columns = [

@@ -15,10 +15,11 @@ CREATE TABLE tours (
   description_en TEXT DEFAULT '',
   price NUMERIC(10, 2),
   duration TEXT,
+  duration_numeric INTEGER DEFAULT 0,
   image TEXT,
   airline TEXT,
   transport_info JSONB DEFAULT '[]',
-  badge TEXT CHECK (badge IN ('hot', 'monthly', NULL)),
+  badge TEXT DEFAULT '',
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'draft', 'archived')),
   featured BOOLEAN DEFAULT false,
   sort_order INTEGER DEFAULT 0,
@@ -54,6 +55,7 @@ CREATE TABLE reviews (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL DEFAULT '',
   image TEXT,
+  rating INTEGER DEFAULT 5,
   tag_th TEXT DEFAULT '',
   tag_en TEXT DEFAULT '',
   text_th TEXT DEFAULT '',
@@ -109,7 +111,7 @@ CREATE POLICY "Public read tours" ON tours FOR SELECT USING (true);
 CREATE POLICY "Public read tour_images" ON tour_images FOR SELECT USING (true);
 CREATE POLICY "Public read tour_itinerary" ON tour_itinerary FOR SELECT USING (true);
 CREATE POLICY "Public read reviews" ON reviews FOR SELECT USING (true);
-CREATE POLICY "Public read articles" ON articles FOR SELECT USING (true) WHERE published = true;
+CREATE POLICY "Public read articles" ON articles FOR SELECT USING (published = true);
 CREATE POLICY "Public read gallery" ON gallery FOR SELECT USING (true);
 
 -- Authenticated write policies

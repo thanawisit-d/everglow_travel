@@ -5,7 +5,11 @@ import { cn } from '@/lib/utils';
 import { Upload, X, Loader2 } from 'lucide-react';
 
 export default function ImageUploader({ value, onChange, className }) {
-  const [preview, setPreview] = useState(value || null);
+  const isPublicId = value && !value.startsWith('http') && !value.startsWith('blob:');
+  const initialPreview = isPublicId
+    ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto/${value}`
+    : value || null;
+  const [preview, setPreview] = useState(initialPreview);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
   const inputRef = useRef(null);
@@ -19,7 +23,9 @@ export default function ImageUploader({ value, onChange, className }) {
       return;
     }
 
-    setPreview(URL.createObjectURL(file));
+    if (preview && preview.startsWith('blob:')) URL.revokeObjectURL(preview);
+    const blobUrl = URL.createObjectURL(file);
+    setPreview(blobUrl);
     setError(null);
     setUploading(true);
 
@@ -49,6 +55,7 @@ export default function ImageUploader({ value, onChange, className }) {
   };
 
   const handleRemove = () => {
+    if (preview && preview.startsWith('blob:')) URL.revokeObjectURL(preview);
     setPreview(null);
     onChange(null);
     if (inputRef.current) inputRef.current.value = '';

@@ -16,10 +16,10 @@ export default function TourCard({ tour, locale }) {
         )}
         {tour.badge && (
           <div className="absolute top-2 left-2">
-            <Badge variant={tour.badge === 'hot' ? 'danger' : 'warning'}>
+            <Badge variant={tour.badge.includes('hot') ? 'danger' : 'warning'}>
               {locale === 'th'
-                ? tour.badge === 'hot' ? 'มาแรง' : 'ประจำเดือน'
-                : tour.badge === 'hot' ? 'Hot' : 'Monthly'}
+                ? tour.badge.includes('hot') ? 'มาแรง' : 'ประจำเดือน'
+                : tour.badge.includes('hot') ? 'Hot' : 'Monthly'}
             </Badge>
           </div>
         )}

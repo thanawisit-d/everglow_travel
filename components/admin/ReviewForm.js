@@ -10,6 +10,7 @@ import ImageUploader from '@/components/admin/ImageUploader';
 export default function ReviewForm({ initialData, onSubmit, loading }) {
   const [form, setForm] = useState({
     name: '',
+    rating: 5,
     tag_th: '',
     tag_en: '',
     text_th: '',
@@ -44,7 +45,7 @@ export default function ReviewForm({ initialData, onSubmit, loading }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    onSubmit({ ...form, sort_order: Number(form.sort_order) });
+    onSubmit({ ...form, sort_order: Number(form.sort_order), rating: Number(form.rating) });
   };
 
   return (
@@ -57,6 +58,14 @@ export default function ReviewForm({ initialData, onSubmit, loading }) {
             value={form.name}
             onChange={(e) => handleChange('name', e.target.value)}
             error={errors.name}
+          />
+          <Input
+            label="Rating (1-5)"
+            type="number"
+            min={1}
+            max={5}
+            value={form.rating}
+            onChange={(e) => handleChange('rating', Number(e.target.value))}
           />
           <Input
             label="Tag (TH)"

@@ -26,8 +26,8 @@ export default function ArticlesPage() {
   async function handleDelete(id) {
     if (!confirm('Are you sure you want to delete this article?')) return;
     const supabase = createClient();
-    await supabase.from('articles').delete().eq('id', id);
-    setArticles((prev) => prev.filter((a) => a.id !== id));
+    const { error } = await supabase.from('articles').delete().eq('id', id);
+    if (!error) setArticles((prev) => prev.filter((a) => a.id !== id));
   }
 
   const columns = [

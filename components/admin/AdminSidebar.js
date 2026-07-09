@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { createClient } from '@/lib/supabase/client';
 import { LayoutDashboard, Backpack, Star, FileText, LogOut } from 'lucide-react';
 
 const navItems = [
@@ -22,11 +23,12 @@ export default function AdminSidebar({ open, onClose }) {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      window.location.href = '/th';
+      const supabase = createClient();
+      await supabase.auth.signOut();
     } catch {
-      window.location.href = '/th';
+      // ignore
     }
+    window.location.href = '/th';
   };
 
   return (

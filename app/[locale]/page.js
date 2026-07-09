@@ -96,7 +96,7 @@ export default async function HomePage({ params }) {
               <div key={item.id} className="aspect-square rounded-lg overflow-hidden bg-gray-100">
                 <img
                   src={buildImageUrl(item.image)}
-                  alt={fallbackText(item.title_th, item.title_en, locale)}
+                  alt={fallbackText(item.caption_th, item.caption_en, locale)}
                   className="w-full h-full object-cover"
                 />
               </div>

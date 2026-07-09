@@ -11,11 +11,14 @@ export default function EditArticlePage() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [fetchError, setFetchError] = useState('');
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.from('articles').select('*').eq('id', params.id).single()
-      .then(({ data }) => {
+    supabase.from('articles').select('*').eq('id', params.id).maybeSingle()
+      .then(({ data, error: err }) => {
+        if (err) setFetchError(err.message);
         setArticle(data);
       })
       .finally(() => setLoading(false));
@@ -23,11 +26,13 @@ export default function EditArticlePage() {
 
   async function handleSubmit(form) {
     setSubmitting(true);
+    setSubmitError('');
     const supabase = createClient();
     const payload = { ...form, published: Boolean(form.published) };
-    const { error } = await supabase.from('articles').update(payload).eq('id', params.id);
+    const { error: err } = await supabase.from('articles').update(payload).eq('id', params.id);
     setSubmitting(false);
-    if (!error) router.push('/admin/articles');
+    if (err) setSubmitError(err.message);
+    else router.push('/admin/articles');
   }
 
   if (loading) {
@@ -41,7 +46,7 @@ export default function EditArticlePage() {
   if (!article) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500">Article not found.</p>
+        <p className="text-gray-500">{fetchError || 'Article not found.'}</p>
       </div>
     );
   }
@@ -52,6 +57,7 @@ export default function EditArticlePage() {
         <h2 className="text-2xl font-bold text-gray-900">แก้ไขบทความ</h2>
         <p className="text-sm text-gray-500">Edit Article</p>
       </div>
+      {submitError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
       <ArticleForm initialData={article} onSubmit={handleSubmit} loading={submitting} />
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Button from '@/components/ui/Button';
@@ -12,7 +12,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) router.replace('/admin');
+      else setChecking(false);
+    });
+  }, [router]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,6 +36,8 @@ export default function LoginPage() {
       router.push('/admin');
     }
   }
+
+  if (checking) return null;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">

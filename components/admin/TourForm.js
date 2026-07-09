@@ -34,7 +34,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
     title_en: '',
     description_th: '',
     description_en: '',
-    transport: '[]',
+    transport_info: '[]',
     image: null,
     badge: '',
     airline: '',
@@ -85,21 +85,21 @@ export default function TourForm({ initialData, onSubmit, loading }) {
   };
 
   const addTransportRow = () => {
-    const current = safeParseTransport(form.transport);
+    const current = safeParseTransport(form.transport_info);
     current.push({ mode: 'flight', description: '', description_en: '' });
-    handleChange('transport', JSON.stringify(current));
+    handleChange('transport_info', JSON.stringify(current));
   };
 
   const removeTransportRow = (idx) => {
-    const current = safeParseTransport(form.transport);
+    const current = safeParseTransport(form.transport_info);
     current.splice(idx, 1);
-    handleChange('transport', JSON.stringify(current));
+    handleChange('transport_info', JSON.stringify(current));
   };
 
   const updateTransportRow = (idx, field, value) => {
-    const current = safeParseTransport(form.transport);
+    const current = safeParseTransport(form.transport_info);
     current[idx][field] = value;
-    handleChange('transport', JSON.stringify(current));
+    handleChange('transport_info', JSON.stringify(current));
   };
 
   const safeParseTransport = (val) => {
@@ -143,7 +143,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
     onSubmit(payload);
   };
 
-  const transportRows = useMemo(() => safeParseTransport(form.transport), [form.transport]);
+  const transportRows = useMemo(() => safeParseTransport(form.transport_info), [form.transport_info]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">

@@ -1,4 +1,4 @@
-import { fallbackText } from "@/lib/utils";
+import { fallbackText, buildImageUrl } from "@/lib/utils";
 
 export default async function AboutPage({ params }) {
   const { locale } = await params;
@@ -66,11 +66,7 @@ export default async function AboutPage({ params }) {
 
       <div className="relative h-64 md:h-80 rounded-xl overflow-hidden mb-10 bg-gray-100">
         <img
-          src={
-            locale === "th"
-              ? "https://res.cloudinary.com/demo/image/upload/f_auto,q_auto/sample"
-              : "https://res.cloudinary.com/demo/image/upload/f_auto,q_auto/sample"
-          }
+          src={buildImageUrl('assets/images/about-hero')}
           alt={content.heading}
           className="w-full h-full object-cover"
         />

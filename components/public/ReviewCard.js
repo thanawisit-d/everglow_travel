@@ -11,7 +11,7 @@ export default function ReviewCard({ review, locale }) {
         <div>
           <p className="font-medium text-gray-900">{review.name}</p>
           <div className="flex">
-            {Array.from({ length: Math.min(review.rating || 5, 5) }, (_, i) => (
+            {Array.from({ length: Math.min(review.rating ?? 5, 5) }, (_, i) => (
               <span key={i} className="text-yellow-400 text-sm">&#9733;</span>
             ))}
           </div>
@@ -21,7 +21,7 @@ export default function ReviewCard({ review, locale }) {
         {fallbackText(review.text_th, review.text_en, locale)}
       </p>
       {review.created_at && (
-        <p className="text-xs text-gray-400 mt-3">{formatDate(review.created_at)}</p>
+        <p className="text-xs text-gray-400 mt-3">{formatDate(review.created_at, locale)}</p>
       )}
     </Card>
   );

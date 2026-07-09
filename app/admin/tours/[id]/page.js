@@ -12,10 +12,14 @@ export default function EditTourPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
+  const [fetchError, setFetchError] = useState('');
+  const [submitError, setSubmitError] = useState('');
+
   useEffect(() => {
     const supabase = createClient();
-    supabase.from('tours').select('*').eq('id', params.id).single()
-      .then(({ data }) => {
+    supabase.from('tours').select('*').eq('id', params.id).maybeSingle()
+      .then(({ data, error: err }) => {
+        if (err) setFetchError(err.message);
         setTour(data);
       })
       .finally(() => setLoading(false));
@@ -23,11 +27,13 @@ export default function EditTourPage() {
 
   async function handleSubmit(form) {
     setSubmitting(true);
+    setSubmitError('');
     const supabase = createClient();
     const payload = { ...form, price: Number(form.price), sort_order: Number(form.sort_order) };
-    const { error } = await supabase.from('tours').update(payload).eq('id', params.id);
+    const { error: err } = await supabase.from('tours').update(payload).eq('id', params.id);
     setSubmitting(false);
-    if (!error) router.push('/admin/tours');
+    if (err) setSubmitError(err.message);
+    else router.push('/admin/tours');
   }
 
   if (loading) {
@@ -41,7 +47,7 @@ export default function EditTourPage() {
   if (!tour) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500">Tour not found.</p>
+        <p className="text-gray-500">{fetchError || 'Tour not found.'}</p>
       </div>
     );
   }
@@ -52,6 +58,7 @@ export default function EditTourPage() {
         <h2 className="text-2xl font-bold text-gray-900">แก้ไขทัวร์</h2>
         <p className="text-sm text-gray-500">Edit Tour</p>
       </div>
+      {submitError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
       <TourForm initialData={tour} onSubmit={handleSubmit} loading={submitting} />
     </div>
   );

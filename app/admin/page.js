@@ -16,7 +16,7 @@ export default function AdminDashboard() {
       supabase.from('tours').select('id', { count: 'exact', head: true }).eq('status', 'active'),
       supabase.from('reviews').select('id', { count: 'exact', head: true }),
       supabase.from('articles').select('id', { count: 'exact', head: true }).eq('published', true),
-      supabase.from('contacts').select('id', { count: 'exact', head: true }),
+      supabase.from('contact_messages').select('id', { count: 'exact', head: true }),
       supabase.from('tours').select('id, title_th, title_en, created_at').order('created_at', { ascending: false }).limit(5),
     ]).then(([tours, reviews, articles, messages, recent]) => {
       setStats({
@@ -44,10 +44,10 @@ export default function AdminDashboard() {
         <p className="text-sm text-gray-500">Dashboard</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatsCard label="Active Tours" value={stats.tours} icon={MapPin} />
-        <StatsCard label="Reviews" value={stats.reviews} icon={Star} />
-        <StatsCard label="Published Articles" value={stats.articles} icon={FileText} />
-        <StatsCard label="Contact Messages" value={stats.messages} icon={MessageSquare} />
+        <StatsCard title="Active Tours" value={stats.tours} icon={MapPin} />
+        <StatsCard title="Reviews" value={stats.reviews} icon={Star} />
+        <StatsCard title="Published Articles" value={stats.articles} icon={FileText} />
+        <StatsCard title="Contact Messages" value={stats.messages} icon={MessageSquare} />
       </div>
       {recentTours.length > 0 && (
         <div className="rounded-lg bg-white p-6 shadow">

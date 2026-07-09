@@ -49,7 +49,7 @@ export default async function TourDetailPage({ params }) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "TouristTrip",
     name: title,
     description: description,
     offers: {
@@ -72,12 +72,13 @@ export default async function TourDetailPage({ params }) {
             src={buildImageUrl(tour.image)}
             alt={title}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         </div>
       )}
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Link
-          href={`/${locale}/domestic`}
+          href={`/${locale}/${tour.type === 'outbound' ? 'outbound' : 'domestic'}`}
           className="text-sm text-emerald-600 hover:text-emerald-700 mb-4 inline-block"
         >
           &larr; {t("กลับไปหน้ารายการทัวร์", "Back to tours")}
@@ -86,10 +87,10 @@ export default async function TourDetailPage({ params }) {
         <div className="flex items-center gap-3 mb-4">
           <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
           {tour.badge && (
-            <Badge variant={tour.badge === "hot" ? "danger" : "warning"}>
+            <Badge variant={tour.badge.includes("hot") ? "danger" : "warning"}>
               {locale === "th"
-                ? tour.badge === "hot" ? "มาแรง" : "ประจำเดือน"
-                : tour.badge === "hot" ? "Hot" : "Monthly"}
+                ? tour.badge.includes("hot") ? "มาแรง" : "ประจำเดือน"
+                : tour.badge.includes("hot") ? "Hot" : "Monthly"}
             </Badge>
           )}
         </div>
@@ -152,7 +153,7 @@ export default async function TourDetailPage({ params }) {
 
         {tour.created_at && (
           <p className="text-xs text-gray-400 mt-8">
-            {t("เผยแพร่เมื่อ", "Published")}: {formatDate(tour.created_at)}
+            {t("เผยแพร่เมื่อ", "Published")}: {formatDate(tour.created_at, locale)}
           </p>
         )}
       </div>
