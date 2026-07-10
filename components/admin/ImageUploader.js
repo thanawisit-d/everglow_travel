@@ -5,9 +5,10 @@ import { cn } from '@/lib/utils';
 import { Upload, X, Loader2 } from 'lucide-react';
 
 export default function ImageUploader({ value, onChange, className, folder = '' }) {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
   const isPublicId = value && !value.startsWith('http') && !value.startsWith('blob:');
-  const initialPreview = isPublicId
-    ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto/${value}`
+  const initialPreview = isPublicId && cloudName
+    ? `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${value}`
     : value || null;
   const [preview, setPreview] = useState(initialPreview);
   const [uploading, setUploading] = useState(false);
@@ -30,13 +31,19 @@ export default function ImageUploader({ value, onChange, className, folder = '' 
     setUploading(true);
 
     try {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+      if (!cloudName) throw new Error('ไม่ได้ตั้งค่า NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME');
+      if (!uploadPreset) throw new Error('ไม่ได้ตั้งค่า NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET');
+
       const formData = new FormData();
       formData.append('file', file);
       if (folder) formData.append('folder', folder);
-      formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+      formData.append('upload_preset', uploadPreset);
 
       const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         { method: 'POST', body: formData }
       );
 
