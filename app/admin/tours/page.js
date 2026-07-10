@@ -7,16 +7,17 @@ export default function ToursPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.from('tours')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .then(() => {
-        console.log('query done');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    const fetchData = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase.from('tours').select('*').order('sort_order', { ascending: true });
+        console.log('result:', data, error);
+      } catch (e) {
+        console.error('caught:', e);
+      }
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
   if (loading) {
