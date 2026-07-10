@@ -45,7 +45,7 @@ export default function EditReviewPage() {
   if (!review) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500">{fetchError || 'Review not found.'}</p>
+        <p className="text-gray-500">{fetchError || 'ไม่พบรีวิว'}</p>
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function EditReviewPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">แก้ไขรีวิว</h2>
-        <p className="text-sm text-gray-500">Edit Review</p>
+        <p className="text-sm text-gray-500">แก้ไขรีวิว</p>
       </div>
       {submitError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
       <ReviewForm initialData={review} onSubmit={handleSubmit} loading={submitting} />

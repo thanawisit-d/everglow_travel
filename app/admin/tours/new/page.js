@@ -24,7 +24,7 @@ export default function NewTourPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">เพิ่มทัวร์ใหม่</h2>
-        <p className="text-sm text-gray-500">Add New Tour</p>
+        <p className="text-sm text-gray-500">สร้างทัวร์ใหม่</p>
       </div>
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
       <TourForm onSubmit={handleSubmit} loading={loading} />

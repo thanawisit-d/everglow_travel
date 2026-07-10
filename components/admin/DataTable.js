@@ -9,7 +9,7 @@ export default function DataTable({
   if (!data.length) {
     return (
       <div className="rounded-lg border border-gray-200 bg-white py-12 text-center text-gray-500">
-        No data found.
+        ไม่มีข้อมูล
       </div>
     );
   }

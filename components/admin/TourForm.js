@@ -10,14 +10,14 @@ import ImageUploader from '@/components/admin/ImageUploader';
 import { COUNTRY_OPTIONS, PROVINCE_OPTIONS, AIRLINE_OPTIONS } from '@/lib/admin-data';
 
 const statusOptions = [
-  { value: 'active', label: 'Active' },
-  { value: 'draft', label: 'Draft' },
-  { value: 'archived', label: 'Archived' },
+  { value: 'active', label: 'เปิดใช้งาน' },
+  { value: 'draft', label: 'ร่าง' },
+  { value: 'archived', label: 'เก็บถาวร' },
 ];
 
 const durationPresets = [
-  '1 Day', '2 Days 1 Night', '3 Days 2 Nights', '4 Days 3 Nights',
-  '5 Days 4 Nights', '6 Days 5 Nights', '7 Days 6 Nights',
+  '1 วัน', '2 วัน 1 คืน', '3 วัน 2 คืน', '4 วัน 3 คืน',
+  '5 วัน 4 คืน', '6 วัน 5 คืน', '7 วัน 6 คืน',
 ];
 
 export default function TourForm({ initialData, onSubmit, loading }) {
@@ -49,17 +49,17 @@ export default function TourForm({ initialData, onSubmit, loading }) {
   const isOutbound = form.type === 'outbound';
 
   const countryOpts = useMemo(
-    () => [{ value: '', label: 'Select country...' }, ...COUNTRY_OPTIONS],
+    () => [{ value: '', label: 'เลือกประเทศ...' }, ...COUNTRY_OPTIONS],
     []
   );
 
   const provinceOpts = useMemo(
-    () => [{ value: '', label: 'Select province...' }, ...PROVINCE_OPTIONS],
+    () => [{ value: '', label: 'เลือกจังหวัด...' }, ...PROVINCE_OPTIONS],
     []
   );
 
   const airlineOpts = useMemo(
-    () => [{ value: '', label: 'Select airline...' }, ...AIRLINE_OPTIONS],
+    () => [{ value: '', label: 'เลือกสายการบิน...' }, ...AIRLINE_OPTIONS],
     []
   );
 
@@ -127,10 +127,10 @@ export default function TourForm({ initialData, onSubmit, loading }) {
 
   const validate = () => {
     const errs = {};
-    if (!form.title_th) errs.title_th = 'Required';
-    if (!form.title_en) errs.title_en = 'Required';
-    if (!form.type) errs.type = 'Required';
-    if (!form.price || isNaN(Number(form.price))) errs.price = 'Valid price required';
+    if (!form.title_th) errs.title_th = 'กรุณากรอก';
+    if (!form.title_en) errs.title_en = 'กรุณากรอก';
+    if (!form.type) errs.type = 'กรุณาเลือก';
+    if (!form.price || isNaN(Number(form.price))) errs.price = 'กรุณาระบุราคาที่ถูกต้อง';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -151,10 +151,10 @@ export default function TourForm({ initialData, onSubmit, loading }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Basic Info</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">ข้อมูลพื้นฐาน</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">Type</label>
+              <label className="mb-2 block text-sm font-medium text-gray-700">ประเภท</label>
             <div className="flex gap-4">
               {['domestic', 'outbound'].map((t) => (
                 <label
@@ -173,14 +173,14 @@ export default function TourForm({ initialData, onSubmit, loading }) {
                     onChange={(e) => handleChange('type', e.target.value)}
                     className="sr-only"
                   />
-                  {t === 'domestic' ? 'Domestic' : 'Outbound'}
+                  {t === 'domestic' ? 'ในประเทศ' : 'ต่างประเทศ'}
                 </label>
               ))}
             </div>
             {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type}</p>}
           </div>
           <Select
-            label="Status"
+            label="สถานะ"
             options={statusOptions}
             value={form.status}
             onChange={(e) => handleChange('status', e.target.value)}
@@ -192,10 +192,10 @@ export default function TourForm({ initialData, onSubmit, loading }) {
               onChange={(e) => handleChange('featured', e.target.checked)}
               className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
             />
-            <span className="text-sm font-medium text-gray-700">Featured</span>
+            <span className="text-sm font-medium text-gray-700">แนะนำ</span>
           </label>
           <Input
-            label="Sort Order"
+            label="ลำดับ"
             type="number"
             value={form.sort_order}
             onChange={(e) => handleChange('sort_order', e.target.value)}
@@ -204,32 +204,32 @@ export default function TourForm({ initialData, onSubmit, loading }) {
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Location</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">สถานที่</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {isOutbound ? (
             <Select
-              label="Country"
+              label="ประเทศ"
               options={countryOpts}
               value={form.country}
               onChange={(e) => handleChange('country', e.target.value)}
             />
           ) : (
             <Input
-              label="Country"
+              label="ประเทศ"
               value={form.country}
               onChange={(e) => handleChange('country', e.target.value)}
             />
           )}
           {!isOutbound ? (
             <Select
-              label="Province"
+              label="จังหวัด"
               options={provinceOpts}
               value={form.province}
               onChange={(e) => handleChange('province', e.target.value)}
             />
           ) : (
             <Input
-              label="Province"
+              label="จังหวัด"
               value={form.province}
               onChange={(e) => handleChange('province', e.target.value)}
             />
@@ -238,17 +238,17 @@ export default function TourForm({ initialData, onSubmit, loading }) {
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Pricing & Duration</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">ราคาและระยะเวลา</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <Input
-            label="Price (THB)"
+            label="ราคา (บาท)"
             type="number"
             value={form.price}
             onChange={(e) => handleChange('price', e.target.value)}
             error={errors.price}
           />
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">Duration</label>
+            <label className="mb-2 block text-sm font-medium text-gray-700">ระยะเวลา</label>
             <div className="flex flex-wrap gap-2">
               {durationPresets.map((d) => (
                 <button
@@ -267,7 +267,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
             </div>
             <input
               type="text"
-              placeholder="Custom duration..."
+              placeholder="กำหนดเอง..."
               value={customDuration}
               onChange={(e) => handleCustomDuration(e.target.value)}
               className="mt-2 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -277,17 +277,17 @@ export default function TourForm({ initialData, onSubmit, loading }) {
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Description</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">คำอธิบาย</h2>
         <div className="grid gap-4">
           <Textarea
-            label="Description (TH)"
+            label="คำอธิบาย (TH)"
             rows={4}
             value={form.description_th}
             onChange={(e) => handleChange('description_th', e.target.value)}
             error={errors.description_th}
           />
           <Textarea
-            label="Description (EN)"
+            label="คำอธิบาย (EN)"
             rows={4}
             value={form.description_en}
             onChange={(e) => handleChange('description_en', e.target.value)}
@@ -298,10 +298,10 @@ export default function TourForm({ initialData, onSubmit, loading }) {
 
       {isOutbound && (
         <Card>
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">Airline</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">สายการบิน</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <Select
-              label="Airline"
+              label="สายการบิน"
               options={airlineOpts}
               value={form.airline}
               onChange={(e) => handleChange('airline', e.target.value)}
@@ -310,7 +310,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
               <div className="flex items-end pb-1">
                 <img
                   src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto/${form.airline}`}
-                  alt="Airline logo"
+                  alt="โลโก้สายการบิน"
                   className="max-h-10 rounded object-contain"
                   onError={(e) => { e.target.style.display = 'none' }}
                 />
@@ -321,27 +321,27 @@ export default function TourForm({ initialData, onSubmit, loading }) {
       )}
 
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Transport</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">การเดินทาง</h2>
         <div className="space-y-3">
           {transportRows.map((row, idx) => (
             <div key={idx} className="flex flex-wrap items-end gap-3 rounded-lg border border-gray-200 p-3">
               <div className="flex-1">
-                <label className="mb-1 block text-xs font-medium text-gray-500">Mode</label>
+                <label className="mb-1 block text-xs font-medium text-gray-500">รูปแบบ</label>
                 <select
                   value={row.mode || 'flight'}
                   onChange={(e) => updateTransportRow(idx, 'mode', e.target.value)}
                   className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 >
-                  <option value="flight">Flight</option>
-                  <option value="bus">Bus</option>
-                  <option value="train">Train</option>
-                  <option value="ferry">Ferry</option>
-                  <option value="car">Car</option>
-                  <option value="other">Other</option>
+                  <option value="flight">เครื่องบิน</option>
+                  <option value="bus">รถบัส</option>
+                  <option value="train">รถไฟ</option>
+                  <option value="ferry">เรือ</option>
+                  <option value="car">รถยนต์</option>
+                  <option value="other">อื่นๆ</option>
                 </select>
               </div>
               <div className="flex-[2]">
-                <label className="mb-1 block text-xs font-medium text-gray-500">Description (TH)</label>
+                <label className="mb-1 block text-xs font-medium text-gray-500">คำอธิบาย (TH)</label>
                 <input
                   value={row.description || ''}
                   onChange={(e) => updateTransportRow(idx, 'description', e.target.value)}
@@ -349,7 +349,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
                 />
               </div>
               <div className="flex-[2]">
-                <label className="mb-1 block text-xs font-medium text-gray-500">Description (EN)</label>
+                <label className="mb-1 block text-xs font-medium text-gray-500">คำอธิบาย (EN)</label>
                 <input
                   value={row.description_en || ''}
                   onChange={(e) => updateTransportRow(idx, 'description_en', e.target.value)}
@@ -370,13 +370,13 @@ export default function TourForm({ initialData, onSubmit, loading }) {
             onClick={addTransportRow}
             className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
           >
-            + Add transport leg
+            + เพิ่มการเดินทาง
           </button>
         </div>
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Image</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">รูปภาพ</h2>
         <ImageUploader
           value={form.image}
           onChange={(val) => handleChange('image', val)}
@@ -384,7 +384,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Badge</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">ป้าย</h2>
         <div className="flex flex-wrap gap-4">
           {['hot', 'monthly'].map((b) => {
             const badges = form.badge ? form.badge.split(',').filter(Boolean) : [];
@@ -404,7 +404,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
                   onChange={() => handleBadgeToggle(b)}
                   className="sr-only"
                 />
-                {b === 'hot' ? '🔥 Hot' : '📅 Monthly Pick'}
+                {b === 'hot' ? '🔥 มาแรง' : '📅 เดือนนี้'}
               </label>
             );
           })}
@@ -413,7 +413,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
 
       <div className="flex justify-end gap-3">
         <Button type="submit" loading={loading}>
-          {initialData ? 'Update Tour' : 'Create Tour'}
+          {initialData ? 'อัปเดตทัวร์' : 'สร้างทัวร์'}
         </Button>
       </div>
     </form>

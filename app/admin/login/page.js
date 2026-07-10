@@ -44,12 +44,12 @@ export default function LoginPage() {
       <div className="w-full max-w-sm rounded-lg bg-white p-8 shadow">
         <div className="mb-6 text-center">
           <Mountain className="mx-auto h-10 w-10 text-emerald-600" />
-          <h1 className="mt-2 text-xl font-bold text-gray-900">Admin Login</h1>
+          <h1 className="mt-2 text-xl font-bold text-gray-900">เข้าสู่ระบบผู้ดูแล</h1>
           <p className="mt-1 text-sm text-gray-500">Everglow Travel</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            label="Email"
+            label="อีเมล"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -57,7 +57,7 @@ export default function LoginPage() {
             autoComplete="email"
           />
           <Input
-            label="Password"
+            label="รหัสผ่าน"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -68,7 +68,7 @@ export default function LoginPage() {
             <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>
           )}
           <Button type="submit" loading={loading} className="w-full">
-            Sign In
+            เข้าสู่ระบบ
           </Button>
         </form>
       </div>

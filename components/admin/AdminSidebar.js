@@ -7,10 +7,10 @@ import { createClient } from '@/lib/supabase/client';
 import { LayoutDashboard, Backpack, Star, FileText, LogOut } from 'lucide-react';
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/tours', label: 'Tours', icon: Backpack },
-  { href: '/admin/reviews', label: 'Reviews', icon: Star },
-  { href: '/admin/articles', label: 'Articles', icon: FileText },
+  { href: '/admin', label: 'แดชบอร์ด', icon: LayoutDashboard },
+  { href: '/admin/tours', label: 'ทัวร์', icon: Backpack },
+  { href: '/admin/reviews', label: 'รีวิว', icon: Star },
+  { href: '/admin/articles', label: 'บทความ', icon: FileText },
 ];
 
 export default function AdminSidebar({ open, onClose }) {
@@ -74,7 +74,7 @@ export default function AdminSidebar({ open, onClose }) {
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
         >
           <LogOut className="h-5 w-5" />
-          Logout
+          ออกจากระบบ
         </button>
       </div>
     </aside>

@@ -27,7 +27,7 @@ export default function ReviewsPage() {
   }, []);
 
   async function handleDelete(id) {
-    if (!confirm('Are you sure you want to delete this review?')) return;
+    if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรีวิวนี้?')) return;
     setDeleteError('');
     const supabase = createClient();
     const { error } = await supabase.from('reviews').delete().eq('id', id);
@@ -38,7 +38,7 @@ export default function ReviewsPage() {
   const columns = [
     {
       key: 'image',
-      label: 'Image',
+      label: 'รูป',
       render: (row) => (
         <img
           src={buildImageUrl(row.image)}
@@ -47,12 +47,12 @@ export default function ReviewsPage() {
         />
       ),
     },
-    { key: 'name', label: 'Name' },
-    { key: 'tag_th', label: 'Tag (TH)' },
-    { key: 'sort_order', label: 'Order' },
+    { key: 'name', label: 'ชื่อ' },
+    { key: 'tag_th', label: 'แท็ก (TH)' },
+    { key: 'sort_order', label: 'ลำดับ' },
     {
       key: 'actions',
-      label: 'Actions',
+      label: 'จัดการ',
       render: (row) => (
         <div className="flex gap-2">
           <Link href={`/admin/reviews/${row.id}`}>
@@ -81,7 +81,7 @@ export default function ReviewsPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">จัดการรีวิว</h2>
-          <p className="text-sm text-gray-500">Manage Reviews</p>
+          <p className="text-sm text-gray-500">จัดการรีวิวทั้งหมด</p>
         </div>
         <Link href="/admin/reviews/new">
           <Button>

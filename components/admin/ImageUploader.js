@@ -19,7 +19,7 @@ export default function ImageUploader({ value, onChange, className }) {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      setError('Please select an image file');
+      setError('กรุณาเลือกรูปภาพ');
       return;
     }
 
@@ -41,13 +41,13 @@ export default function ImageUploader({ value, onChange, className }) {
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error?.message || 'Upload failed');
+        throw new Error(errData.error?.message || 'อัปโหลดล้มเหลว');
       }
 
       const data = await res.json();
       onChange(data.public_id);
     } catch (err) {
-      setError(err.message || 'Upload failed');
+      setError(err.message || 'อัปโหลดล้มเหลว');
       setPreview(null);
     } finally {
       setUploading(false);
@@ -67,7 +67,7 @@ export default function ImageUploader({ value, onChange, className }) {
         <div className="relative inline-block">
           <img
             src={preview}
-            alt="Preview"
+            alt="ตัวอย่างรูป"
             className="h-48 w-48 rounded-lg object-cover"
           />
           <button
@@ -85,7 +85,7 @@ export default function ImageUploader({ value, onChange, className }) {
           ) : (
             <>
               <Upload className="mb-2 h-8 w-8 text-gray-400" />
-              <span className="text-sm text-gray-500">Upload Image</span>
+              <span className="text-sm text-gray-500">อัปโหลดรูป</span>
             </>
           )}
           <input
@@ -100,7 +100,7 @@ export default function ImageUploader({ value, onChange, className }) {
       )}
 
       {uploading && (
-        <p className="text-sm text-gray-500">Uploading...</p>
+        <p className="text-sm text-gray-500">กำลังอัปโหลด...</p>
       )}
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>

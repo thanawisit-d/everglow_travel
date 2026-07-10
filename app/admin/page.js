@@ -46,18 +46,18 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">แดชบอร์ด</h2>
-        <p className="text-sm text-gray-500">Dashboard</p>
+        <p className="text-sm text-gray-500">ภาพรวมระบบ</p>
       </div>
       {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatsCard title="Active Tours" value={stats.tours} icon={MapPin} color="emerald" />
-        <StatsCard title="Reviews" value={stats.reviews} icon={Star} color="amber" />
-        <StatsCard title="Published Articles" value={stats.articles} icon={FileText} color="blue" />
-        <StatsCard title="Contact Messages" value={stats.messages} icon={MessageSquare} color="purple" />
+        <StatsCard title="ทัวร์ที่เปิดใช้งาน" value={stats.tours} icon={MapPin} color="emerald" />
+        <StatsCard title="รีวิว" value={stats.reviews} icon={Star} color="amber" />
+        <StatsCard title="บทความที่เผยแพร่" value={stats.articles} icon={FileText} color="blue" />
+        <StatsCard title="ข้อความติดต่อ" value={stats.messages} icon={MessageSquare} color="purple" />
       </div>
       {recentTours.length > 0 && (
         <div className="rounded-lg bg-white p-6 shadow">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Recent Tours</h3>
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">ทัวร์ล่าสุด</h3>
           <ul className="divide-y divide-gray-200">
             {recentTours.map((tour) => (
               <li key={tour.id} className="flex items-center justify-between py-3">

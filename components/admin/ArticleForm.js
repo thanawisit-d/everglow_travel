@@ -31,10 +31,10 @@ export default function ArticleForm({ initialData, onSubmit, loading }) {
 
   const validate = () => {
     const errs = {};
-    if (!form.title_th) errs.title_th = 'Required';
-    if (!form.title_en) errs.title_en = 'Required';
-    if (!form.content_th) errs.content_th = 'Required';
-    if (!form.content_en) errs.content_en = 'Required';
+    if (!form.title_th) errs.title_th = 'กรุณากรอก';
+    if (!form.title_en) errs.title_en = 'กรุณากรอก';
+    if (!form.content_th) errs.content_th = 'กรุณากรอก';
+    if (!form.content_en) errs.content_en = 'กรุณากรอก';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -48,16 +48,16 @@ export default function ArticleForm({ initialData, onSubmit, loading }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Article Info</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">ข้อมูลบทความ</h2>
         <div className="grid gap-4">
           <Input
-            label="Title (TH)"
+            label="ชื่อบทความ (TH)"
             value={form.title_th}
             onChange={(e) => handleChange('title_th', e.target.value)}
             error={errors.title_th}
           />
           <Input
-            label="Title (EN)"
+            label="ชื่อบทความ (EN)"
             value={form.title_en}
             onChange={(e) => handleChange('title_en', e.target.value)}
             error={errors.title_en}
@@ -66,17 +66,17 @@ export default function ArticleForm({ initialData, onSubmit, loading }) {
       </Card>
 
       <Card>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Content</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-900">เนื้อหา</h2>
         <div className="grid gap-4">
           <Textarea
-            label="Content (TH)"
+            label="เนื้อหา (TH)"
             rows={8}
             value={form.content_th}
             onChange={(e) => handleChange('content_th', e.target.value)}
             error={errors.content_th}
           />
           <Textarea
-            label="Content (EN)"
+            label="เนื้อหา (EN)"
             rows={8}
             value={form.content_en}
             onChange={(e) => handleChange('content_en', e.target.value)}
@@ -93,13 +93,13 @@ export default function ArticleForm({ initialData, onSubmit, loading }) {
             onChange={(e) => handleChange('published', e.target.checked)}
             className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
           />
-          <span className="text-sm font-medium text-gray-700">Published</span>
+          <span className="text-sm font-medium text-gray-700">เผยแพร่</span>
         </label>
       </Card>
 
       <div className="flex justify-end gap-3">
         <Button type="submit" loading={loading}>
-          {initialData ? 'Update Article' : 'Create Article'}
+          {initialData ? 'อัปเดตบทความ' : 'สร้างบทความ'}
         </Button>
       </div>
     </form>

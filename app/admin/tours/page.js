@@ -28,7 +28,7 @@ export default function ToursPage() {
   }, []);
 
   async function handleDelete(id) {
-    if (!confirm('Are you sure you want to delete this tour?')) return;
+    if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการลบทัวร์นี้?')) return;
     setDeleteError('');
     const supabase = createClient();
     const { error } = await supabase.from('tours').delete().eq('id', id);
@@ -39,7 +39,7 @@ export default function ToursPage() {
   const columns = [
     {
       key: 'image',
-      label: 'Image',
+      label: 'รูป',
       render: (row) => (
         <img
           src={buildImageUrl(row.image)}
@@ -48,26 +48,29 @@ export default function ToursPage() {
         />
       ),
     },
-    { key: 'title_th', label: 'Title (TH)' },
-    { key: 'type', label: 'Type' },
+    { key: 'title_th', label: 'ชื่อ (TH)' },
+    { key: 'type', label: 'ประเภท' },
     {
       key: 'price',
-      label: 'Price',
+      label: 'ราคา',
       render: (row) =>
         new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', minimumFractionDigits: 0 }).format(row.price),
     },
     {
       key: 'status',
-      label: 'Status',
-      render: (row) => (
-        <Badge variant={row.status === 'active' ? 'success' : 'warning'}>
-          {row.status}
-        </Badge>
-      ),
+      label: 'สถานะ',
+      render: (row) => {
+        const labels = { active: 'เปิดใช้งาน', draft: 'ร่าง', archived: 'เก็บถาวร' };
+        return (
+          <Badge variant={row.status === 'active' ? 'success' : 'warning'}>
+            {labels[row.status] || row.status}
+          </Badge>
+        );
+      },
     },
     {
       key: 'actions',
-      label: 'Actions',
+      label: 'จัดการ',
       render: (row) => (
         <div className="flex gap-2">
           <Link href={`/admin/tours/${row.id}`}>
@@ -96,7 +99,7 @@ export default function ToursPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">จัดการทัวร์</h2>
-          <p className="text-sm text-gray-500">Manage Tours</p>
+          <p className="text-sm text-gray-500">จัดการทัวร์ทั้งหมด</p>
         </div>
         <Link href="/admin/tours/new">
           <Button>

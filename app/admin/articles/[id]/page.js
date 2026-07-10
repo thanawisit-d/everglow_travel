@@ -45,7 +45,7 @@ export default function EditArticlePage() {
   if (!article) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500">{fetchError || 'Article not found.'}</p>
+        <p className="text-gray-500">{fetchError || 'ไม่พบบทความ'}</p>
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function EditArticlePage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">แก้ไขบทความ</h2>
-        <p className="text-sm text-gray-500">Edit Article</p>
+        <p className="text-sm text-gray-500">แก้ไขบทความ</p>
       </div>
       {submitError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
       <ArticleForm initialData={article} onSubmit={handleSubmit} loading={submitting} />

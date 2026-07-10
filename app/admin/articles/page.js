@@ -27,7 +27,7 @@ export default function ArticlesPage() {
   }, []);
 
   async function handleDelete(id) {
-    if (!confirm('Are you sure you want to delete this article?')) return;
+    if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการลบบทความนี้?')) return;
     setDeleteError('');
     const supabase = createClient();
     const { error } = await supabase.from('articles').delete().eq('id', id);
@@ -36,25 +36,25 @@ export default function ArticlesPage() {
   }
 
   const columns = [
-    { key: 'title_th', label: 'Title (TH)' },
-    { key: 'title_en', label: 'Title (EN)' },
+    { key: 'title_th', label: 'ชื่อ (TH)' },
+    { key: 'title_en', label: 'ชื่อ (EN)' },
     {
       key: 'published',
-      label: 'Published',
+      label: 'เผยแพร่',
       render: (row) => (
         <Badge variant={row.published ? 'success' : 'warning'}>
-          {row.published ? 'Published' : 'Draft'}
+                  {row.published ? 'เผยแพร่' : 'ร่าง'}
         </Badge>
       ),
     },
     {
       key: 'created_at',
-      label: 'Created',
+      label: 'สร้างเมื่อ',
       render: (row) => new Date(row.created_at).toLocaleDateString('th-TH'),
     },
     {
       key: 'actions',
-      label: 'Actions',
+      label: 'จัดการ',
       render: (row) => (
         <div className="flex gap-2">
           <Link href={`/admin/articles/${row.id}`}>
@@ -83,7 +83,7 @@ export default function ArticlesPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">จัดการบทความ</h2>
-          <p className="text-sm text-gray-500">Manage Articles</p>
+          <p className="text-sm text-gray-500">จัดการบทความทั้งหมด</p>
         </div>
         <Link href="/admin/articles/new">
           <Button>

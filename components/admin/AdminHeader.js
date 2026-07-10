@@ -9,7 +9,7 @@ export default function AdminHeader({ title, user, onMenuToggle }) {
       <button
         onClick={onMenuToggle}
         className="flex items-center lg:hidden"
-        aria-label="Toggle sidebar"
+        aria-label="เปิด/ปิดเมนู"
       >
         <Menu className="h-6 w-6" />
       </button>
@@ -22,10 +22,10 @@ export default function AdminHeader({ title, user, onMenuToggle }) {
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-sm font-medium text-emerald-700">
               {user.name
                 ? user.name.charAt(0).toUpperCase()
-                : 'U'}
+                : 'A'}
             </div>
             <span className="hidden text-sm font-medium text-gray-700 sm:block">
-              {user.name || user.email || 'Admin'}
+              {user.name || user.email || 'ผู้ดูแล'}
             </span>
           </div>
         )}

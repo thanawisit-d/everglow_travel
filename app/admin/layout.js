@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import AdminHeader from '@/components/admin/AdminHeader';
 
-const titleMap = {
-  '/admin': 'Dashboard',
+  const titleMap = {
+    '/admin': 'แดชบอร์ด',
   '/admin/tours': 'จัดการทัวร์',
   '/admin/tours/new': 'เพิ่มทัวร์ใหม่',
   '/admin/reviews': 'จัดการรีวิว',
@@ -25,7 +25,7 @@ export default function AdminLayout({ children }) {
     if (pathname.match(/^\/admin\/tours\//)) return 'แก้ไขทัวร์';
     if (pathname.match(/^\/admin\/reviews\//)) return 'แก้ไขรีวิว';
     if (pathname.match(/^\/admin\/articles\//)) return 'แก้ไขบทความ';
-    return 'Admin';
+    return 'ผู้ดูแล';
   }, [pathname]);
 
   if (pathname.startsWith('/admin/login')) {

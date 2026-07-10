@@ -46,7 +46,7 @@ export default function EditTourPage() {
   if (!tour) {
     return (
       <div className="flex items-center justify-center py-20">
-        <p className="text-gray-500">{fetchError || 'Tour not found.'}</p>
+        <p className="text-gray-500">{fetchError || 'ไม่พบทัวร์'}</p>
       </div>
     );
   }
@@ -55,7 +55,7 @@ export default function EditTourPage() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold text-gray-900">แก้ไขทัวร์</h2>
-        <p className="text-sm text-gray-500">Edit Tour</p>
+        <p className="text-sm text-gray-500">แก้ไขทัวร์</p>
       </div>
       {submitError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{submitError}</p>}
       <TourForm initialData={tour} onSubmit={handleSubmit} loading={submitting} />
