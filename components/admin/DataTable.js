@@ -1,13 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { Pencil, Trash2 } from 'lucide-react';
 
 export default function DataTable({
   columns = [],
   data = [],
-  onEdit,
-  onDelete,
 }) {
   if (!data.length) {
     return (
@@ -30,11 +27,7 @@ export default function DataTable({
                 {col.label}
               </th>
             ))}
-            {(onEdit || onDelete) && (
-              <th className="whitespace-nowrap px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
-                Actions
-              </th>
-            )}
+
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
@@ -54,30 +47,7 @@ export default function DataTable({
                   {col.render ? col.render(row) : row[col.key]}
                 </td>
               ))}
-              {(onEdit || onDelete) && (
-                <td className="whitespace-nowrap px-4 py-3 text-right text-sm">
-                  <div className="flex items-center justify-end gap-2">
-                    {onEdit && (
-                      <button
-                        onClick={() => onEdit(row)}
-                        className="rounded p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-emerald-600"
-                        title="Edit"
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </button>
-                    )}
-                    {onDelete && (
-                      <button
-                        onClick={() => onDelete(row)}
-                        className="rounded p-1.5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-red-600"
-                        title="Delete"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              )}
+
             </tr>
           ))}
         </tbody>

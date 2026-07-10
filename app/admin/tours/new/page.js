@@ -14,8 +14,7 @@ export default function NewTourPage() {
     setLoading(true);
     setError('');
     const supabase = createClient();
-    const payload = { ...form, price: Number(form.price), sort_order: Number(form.sort_order) };
-    const { error: err } = await supabase.from('tours').insert([payload]);
+    const { error: err } = await supabase.from('tours').insert([form]);
     setLoading(false);
     if (err) setError(err.message);
     else router.push('/admin/tours');

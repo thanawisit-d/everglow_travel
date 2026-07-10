@@ -12,13 +12,16 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 export default function ToursPage() {
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState('');
+  const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
     const supabase = createClient();
     supabase.from('tours')
       .select('*')
       .order('sort_order', { ascending: true })
-      .then(({ data }) => {
+      .then(({ data, error: err }) => {
+        if (err) setFetchError(err.message);
         setTours(data ?? []);
       })
       .finally(() => setLoading(false));
@@ -26,9 +29,11 @@ export default function ToursPage() {
 
   async function handleDelete(id) {
     if (!confirm('Are you sure you want to delete this tour?')) return;
+    setDeleteError('');
     const supabase = createClient();
     const { error } = await supabase.from('tours').delete().eq('id', id);
-    if (!error) setTours((prev) => prev.filter((t) => t.id !== id));
+    if (error) setDeleteError(error.message);
+    else setTours((prev) => prev.filter((t) => t.id !== id));
   }
 
   const columns = [
@@ -88,7 +93,7 @@ export default function ToursPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">จัดการทัวร์</h2>
           <p className="text-sm text-gray-500">Manage Tours</p>
@@ -100,6 +105,8 @@ export default function ToursPage() {
           </Button>
         </Link>
       </div>
+      {fetchError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{fetchError}</p>}
+      {deleteError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{deleteError}</p>}
       <DataTable columns={columns} data={tours} />
     </div>
   );

@@ -28,8 +28,7 @@ export default function EditArticlePage() {
     setSubmitting(true);
     setSubmitError('');
     const supabase = createClient();
-    const payload = { ...form, published: Boolean(form.published) };
-    const { error: err } = await supabase.from('articles').update(payload).eq('id', params.id);
+    const { error: err } = await supabase.from('articles').update(form).eq('id', params.id);
     setSubmitting(false);
     if (err) setSubmitError(err.message);
     else router.push('/admin/articles');

@@ -14,8 +14,7 @@ export default function NewReviewPage() {
     setLoading(true);
     setError('');
     const supabase = createClient();
-    const payload = { ...form, sort_order: Number(form.sort_order) };
-    const { error: err } = await supabase.from('reviews').insert([payload]);
+    const { error: err } = await supabase.from('reviews').insert([form]);
     setLoading(false);
     if (err) setError(err.message);
     else router.push('/admin/reviews');

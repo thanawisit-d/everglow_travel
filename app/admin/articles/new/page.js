@@ -14,8 +14,7 @@ export default function NewArticlePage() {
     setLoading(true);
     setError('');
     const supabase = createClient();
-    const payload = { ...form, published: Boolean(form.published) };
-    const { error: err } = await supabase.from('articles').insert([payload]);
+    const { error: err } = await supabase.from('articles').insert([form]);
     setLoading(false);
     if (err) setError(err.message);
     else router.push('/admin/articles');

@@ -29,8 +29,7 @@ export default function EditTourPage() {
     setSubmitting(true);
     setSubmitError('');
     const supabase = createClient();
-    const payload = { ...form, price: Number(form.price), sort_order: Number(form.sort_order) };
-    const { error: err } = await supabase.from('tours').update(payload).eq('id', params.id);
+    const { error: err } = await supabase.from('tours').update(form).eq('id', params.id);
     setSubmitting(false);
     if (err) setSubmitError(err.message);
     else router.push('/admin/tours');

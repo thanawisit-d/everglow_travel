@@ -28,8 +28,7 @@ export default function EditReviewPage() {
     setSubmitting(true);
     setSubmitError('');
     const supabase = createClient();
-    const payload = { ...form, sort_order: Number(form.sort_order) };
-    const { error: err } = await supabase.from('reviews').update(payload).eq('id', params.id);
+    const { error: err } = await supabase.from('reviews').update(form).eq('id', params.id);
     setSubmitting(false);
     if (err) setSubmitError(err.message);
     else router.push('/admin/reviews');

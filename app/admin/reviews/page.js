@@ -11,13 +11,16 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState('');
+  const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
     const supabase = createClient();
     supabase.from('reviews')
       .select('*')
       .order('sort_order', { ascending: true })
-      .then(({ data }) => {
+      .then(({ data, error: err }) => {
+        if (err) setFetchError(err.message);
         setReviews(data ?? []);
       })
       .finally(() => setLoading(false));
@@ -25,9 +28,11 @@ export default function ReviewsPage() {
 
   async function handleDelete(id) {
     if (!confirm('Are you sure you want to delete this review?')) return;
+    setDeleteError('');
     const supabase = createClient();
     const { error } = await supabase.from('reviews').delete().eq('id', id);
-    if (!error) setReviews((prev) => prev.filter((r) => r.id !== id));
+    if (error) setDeleteError(error.message);
+    else setReviews((prev) => prev.filter((r) => r.id !== id));
   }
 
   const columns = [
@@ -73,7 +78,7 @@ export default function ReviewsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">จัดการรีวิว</h2>
           <p className="text-sm text-gray-500">Manage Reviews</p>
@@ -85,6 +90,8 @@ export default function ReviewsPage() {
           </Button>
         </Link>
       </div>
+      {fetchError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{fetchError}</p>}
+      {deleteError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{deleteError}</p>}
       <DataTable columns={columns} data={reviews} />
     </div>
   );

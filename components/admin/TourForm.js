@@ -103,6 +103,9 @@ export default function TourForm({ initialData, onSubmit, loading }) {
   };
 
   const safeParseTransport = (val) => {
+    if (Array.isArray(val)) return val;
+    if (typeof val === 'object' && val !== null) return [val];
+    if (typeof val !== 'string') return [];
     try {
       const parsed = JSON.parse(val);
       return Array.isArray(parsed) ? parsed : [];

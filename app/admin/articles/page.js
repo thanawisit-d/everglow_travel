@@ -11,13 +11,16 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 export default function ArticlesPage() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState('');
+  const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
     const supabase = createClient();
     supabase.from('articles')
       .select('*')
       .order('created_at', { ascending: false })
-      .then(({ data }) => {
+      .then(({ data, error: err }) => {
+        if (err) setFetchError(err.message);
         setArticles(data ?? []);
       })
       .finally(() => setLoading(false));
@@ -25,13 +28,16 @@ export default function ArticlesPage() {
 
   async function handleDelete(id) {
     if (!confirm('Are you sure you want to delete this article?')) return;
+    setDeleteError('');
     const supabase = createClient();
     const { error } = await supabase.from('articles').delete().eq('id', id);
-    if (!error) setArticles((prev) => prev.filter((a) => a.id !== id));
+    if (error) setDeleteError(error.message);
+    else setArticles((prev) => prev.filter((a) => a.id !== id));
   }
 
   const columns = [
     { key: 'title_th', label: 'Title (TH)' },
+    { key: 'title_en', label: 'Title (EN)' },
     {
       key: 'published',
       label: 'Published',
@@ -74,7 +80,7 @@ export default function ArticlesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">จัดการบทความ</h2>
           <p className="text-sm text-gray-500">Manage Articles</p>
@@ -86,6 +92,8 @@ export default function ArticlesPage() {
           </Button>
         </Link>
       </div>
+      {fetchError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{fetchError}</p>}
+      {deleteError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{deleteError}</p>}
       <DataTable columns={columns} data={articles} />
     </div>
   );

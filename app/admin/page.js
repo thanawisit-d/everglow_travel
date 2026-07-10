@@ -9,6 +9,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({ tours: 0, reviews: 0, articles: 0, messages: 0 });
   const [recentTours, setRecentTours] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const supabase = createClient();
@@ -19,6 +20,8 @@ export default function AdminDashboard() {
       supabase.from('contact_messages').select('id', { count: 'exact', head: true }),
       supabase.from('tours').select('id, title_th, title_en, created_at').order('created_at', { ascending: false }).limit(5),
     ]).then(([tours, reviews, articles, messages, recent]) => {
+      const err = tours.error || reviews.error || articles.error || messages.error || recent.error;
+      if (err) { setError(err.message); return; }
       setStats({
         tours: tours.count ?? 0,
         reviews: reviews.count ?? 0,
@@ -26,6 +29,8 @@ export default function AdminDashboard() {
         messages: messages.count ?? 0,
       });
       setRecentTours(recent.data ?? []);
+    }).catch((err) => {
+      setError(err.message);
     }).finally(() => setLoading(false));
   }, []);
 
@@ -43,11 +48,12 @@ export default function AdminDashboard() {
         <h2 className="text-2xl font-bold text-gray-900">แดชบอร์ด</h2>
         <p className="text-sm text-gray-500">Dashboard</p>
       </div>
+      {error && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatsCard title="Active Tours" value={stats.tours} icon={MapPin} />
-        <StatsCard title="Reviews" value={stats.reviews} icon={Star} />
-        <StatsCard title="Published Articles" value={stats.articles} icon={FileText} />
-        <StatsCard title="Contact Messages" value={stats.messages} icon={MessageSquare} />
+        <StatsCard title="Active Tours" value={stats.tours} icon={MapPin} color="emerald" />
+        <StatsCard title="Reviews" value={stats.reviews} icon={Star} color="amber" />
+        <StatsCard title="Published Articles" value={stats.articles} icon={FileText} color="blue" />
+        <StatsCard title="Contact Messages" value={stats.messages} icon={MessageSquare} color="purple" />
       </div>
       {recentTours.length > 0 && (
         <div className="rounded-lg bg-white p-6 shadow">
