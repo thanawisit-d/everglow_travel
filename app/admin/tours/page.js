@@ -10,14 +10,8 @@ export default function ToursPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.from('tours')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .then(({ data, error: err }) => {
-        if (err) setFetchError(err.message);
-        setTours(data ?? []);
-      })
-      .finally(() => setLoading(false));
+    const q = supabase.from('tours').select('*').order('sort_order', { ascending: true });
+    console.log('query built');
   }, []);
 
   if (loading) {
