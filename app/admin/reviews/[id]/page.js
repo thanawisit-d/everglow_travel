@@ -15,13 +15,19 @@ export default function EditReviewPage() {
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.from('reviews').select('*').eq('id', params.id).maybeSingle()
-      .then(({ data, error: err }) => {
+    const load = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error: err } = await supabase
+          .from('reviews').select('*').eq('id', params.id).maybeSingle();
         if (err) setFetchError(err.message);
         setReview(data);
-      })
-      .finally(() => setLoading(false));
+      } catch (e) {
+        setFetchError(e.message);
+      }
+      setLoading(false);
+    };
+    load();
   }, [params.id]);
 
   async function handleSubmit(form) {

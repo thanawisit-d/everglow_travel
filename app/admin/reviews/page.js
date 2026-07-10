@@ -15,24 +15,34 @@ export default function ReviewsPage() {
   const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.from('reviews')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .then(({ data, error: err }) => {
+    const load = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error: err } = await supabase
+          .from('reviews')
+          .select('*')
+          .order('sort_order', { ascending: true });
         if (err) setFetchError(err.message);
         setReviews(data ?? []);
-      })
-      .finally(() => setLoading(false));
+      } catch (e) {
+        setFetchError(e.message);
+      }
+      setLoading(false);
+    };
+    load();
   }, []);
 
   async function handleDelete(id) {
     if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรีวิวนี้?')) return;
     setDeleteError('');
-    const supabase = createClient();
-    const { error } = await supabase.from('reviews').delete().eq('id', id);
-    if (error) setDeleteError(error.message);
-    else setReviews((prev) => prev.filter((r) => r.id !== id));
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.from('reviews').delete().eq('id', id);
+      if (error) setDeleteError(error.message);
+      else setReviews((prev) => prev.filter((r) => r.id !== id));
+    } catch (e) {
+      setDeleteError(e.message);
+    }
   }
 
   const columns = [

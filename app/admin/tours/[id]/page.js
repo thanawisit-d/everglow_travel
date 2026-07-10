@@ -16,13 +16,19 @@ export default function EditTourPage() {
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.from('tours').select('*').eq('id', params.id).maybeSingle()
-      .then(({ data, error: err }) => {
+    const load = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error: err } = await supabase
+          .from('tours').select('*').eq('id', params.id).maybeSingle();
         if (err) setFetchError(err.message);
         setTour(data);
-      })
-      .finally(() => setLoading(false));
+      } catch (e) {
+        setFetchError(e.message);
+      }
+      setLoading(false);
+    };
+    load();
   }, [params.id]);
 
   async function handleSubmit(form) {

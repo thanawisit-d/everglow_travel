@@ -15,24 +15,34 @@ export default function ArticlesPage() {
   const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.from('articles')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .then(({ data, error: err }) => {
+    const load = async () => {
+      try {
+        const supabase = createClient();
+        const { data, error: err } = await supabase
+          .from('articles')
+          .select('*')
+          .order('created_at', { ascending: false });
         if (err) setFetchError(err.message);
         setArticles(data ?? []);
-      })
-      .finally(() => setLoading(false));
+      } catch (e) {
+        setFetchError(e.message);
+      }
+      setLoading(false);
+    };
+    load();
   }, []);
 
   async function handleDelete(id) {
     if (!confirm('คุณแน่ใจหรือไม่ว่าต้องการลบบทความนี้?')) return;
     setDeleteError('');
-    const supabase = createClient();
-    const { error } = await supabase.from('articles').delete().eq('id', id);
-    if (error) setDeleteError(error.message);
-    else setArticles((prev) => prev.filter((a) => a.id !== id));
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.from('articles').delete().eq('id', id);
+      if (error) setDeleteError(error.message);
+      else setArticles((prev) => prev.filter((a) => a.id !== id));
+    } catch (e) {
+      setDeleteError(e.message);
+    }
   }
 
   const columns = [
