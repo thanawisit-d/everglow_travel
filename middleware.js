@@ -15,7 +15,7 @@ function getLocale(request) {
   return preferred;
 }
 
-export async function proxy(request) {
+export async function middleware(request) {
   try {
     const { pathname } = request.nextUrl;
 
