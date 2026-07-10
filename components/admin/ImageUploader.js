@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Upload, X, Loader2 } from 'lucide-react';
 
-export default function ImageUploader({ value, onChange, className }) {
+export default function ImageUploader({ value, onChange, className, folder = '' }) {
   const isPublicId = value && !value.startsWith('http') && !value.startsWith('blob:');
   const initialPreview = isPublicId
     ? `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto/${value}`
@@ -32,6 +32,7 @@ export default function ImageUploader({ value, onChange, className }) {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      if (folder) formData.append('folder', folder);
       formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
 
       const res = await fetch(

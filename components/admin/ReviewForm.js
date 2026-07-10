@@ -105,6 +105,7 @@ export default function ReviewForm({ initialData, onSubmit, loading }) {
         <ImageUploader
           value={form.image}
           onChange={(val) => handleChange('image', val)}
+          folder="reviews"
         />
       </Card>
 

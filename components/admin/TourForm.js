@@ -380,6 +380,7 @@ export default function TourForm({ initialData, onSubmit, loading }) {
         <ImageUploader
           value={form.image}
           onChange={(val) => handleChange('image', val)}
+          folder="tours"
         />
       </Card>
 
