@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
-import { updateSession } from '@/lib/supabase/middleware';
 
 const locales = ['th', 'en'];
 const defaultLocale = 'th';
@@ -22,23 +20,7 @@ export async function proxy(request) {
     const { pathname } = request.nextUrl;
 
     if (pathname.startsWith('/admin') || pathname === '/admin') {
-      if (process.env.ADMIN_AUTH_ENABLED === 'true' && pathname !== '/admin/login') {
-        const supabase = createServerClient(
-          process.env.NEXT_PUBLIC_SUPABASE_URL,
-          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-          {
-            cookies: {
-              getAll: () => request.cookies.getAll(),
-              setAll: () => {},
-            },
-          }
-        );
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-          return NextResponse.redirect(new URL('/admin/login', request.url));
-        }
-      }
-      return updateSession(request);
+      return NextResponse.next();
     }
 
     const locale = getLocale(request);
@@ -47,7 +29,7 @@ export async function proxy(request) {
       return NextResponse.redirect(newUrl);
     }
 
-    return updateSession(request);
+    return NextResponse.next();
   } catch {
     return NextResponse.next();
   }
