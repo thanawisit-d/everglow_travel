@@ -20,6 +20,7 @@ export const metadata = {
     template: '%s | Everglow Travel',
   },
   description: 'Everglow Travel บริษัทนำเที่ยวชั้นนำ บริการทัวร์ต่างประเทศและทัวร์ในประเทศ พร้อมประสบการณ์การเดินทางที่ประทับใจ',
+  icons: { icon: '/favicon.svg' },
   metadataBase: new URL(siteUrl),
   alternates: {
     canonical: '/',
